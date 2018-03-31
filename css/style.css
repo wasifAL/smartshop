@@ -1,0 +1,47 @@
+/*style for all pages*/
+.navbar{
+    border-radius: unset;
+}
+.thumbnail img {
+    width: 100%;
+}
+.thumbnail {
+    padding: 0;
+}
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+/*style for shop.php*/
+.card {
+    height: 100%;
+}
+.slide-image {
+    width: 100%;
+}
+.carousel-control,
+.item {
+    border-radius: 4px;
+}
+.caption h4 {
+    white-space: nowrap;
+}
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+/*style for productview.php*/
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+.thumbnail {
+    padding: 0;
+}
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
