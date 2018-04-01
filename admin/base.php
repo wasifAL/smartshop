@@ -1,0 +1,1 @@
+<h1 style="text-align: center">Admin Panel Home Page</h1>
