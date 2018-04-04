@@ -1,6 +1,6 @@
 <?php
 
-$dbName="shop";
+$dbName="smartshop";
 $dbUser="root";
 $dbPass="";
 $hostName="localhost";

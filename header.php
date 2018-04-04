@@ -1,3 +1,6 @@
+<?php if (!isset($_SESSION)) session_start(); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,7 +13,12 @@
         <!-- Bootstrap Core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
-        <link href="css/style.css" rel="stylesheet">  
+        <link href="css/style.css" rel="stylesheet"> 
+
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -29,24 +37,27 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="shop.php">Shop</a>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="cart.php">Cart</a></li>
+                        
+                        <?php if (!isset($_SESSION['role'])) { ?>
+                            <li><a href="login.php">Login</a></li>
+                            <li><a href="registration.php">Register</a></li>
+                        <?php }else{ ?>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">MORE
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="profile.php">My Profile</a></li>
+                                <?php if ($_SESSION['role'] === 'admin') { ?>
+                                    <li><a href="orders.php">Admin Panel</a></li>
+                                <?php } ?>
+                                <li><a href="orders.php">My Orders</a></li>
+                                <li><a href="logout.php">Logout</a></li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="cart.php">Cart</a>
-                        </li>
-                        <li>
-                            <a href="login.php">Login</a>
-                        </li>
-                        <li>
-                            <a href="register.php">Register</a>
-                        </li>
-                        <li>
-                            <a href="orders.php">My Orders</a>
-                        </li>
-                        <li>
-                            <a href="logout.php">Logout</a>
-                        </li>
+                         <?php } ?>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
