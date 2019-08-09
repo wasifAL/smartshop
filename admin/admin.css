@@ -1,0 +1,8 @@
+#wrapper{
+    width: 100%;
+    height: auto;
+
+}   
+.table tr th,.table  tr td{
+    border-top: unset !important;
+}

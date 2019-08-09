@@ -1,7 +1,7 @@
 <?php
 //including the header area
 
-require 'db/dbcon.php';
+require '../db/dbcon.php';
 
 //check and start sesssion if not started already
 if (!isset($_SESSION))
@@ -18,7 +18,7 @@ function test1($val) {
     return $val;
 }
 
-if (!isset($_SESSION['role'])) {
+if (isset($_SESSION['role'])&&$_SESSION['role']==="admin") {
 
     if (isset($_POST['submit'])) {
 
@@ -27,11 +27,10 @@ if (!isset($_SESSION['role'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $gender = $_POST['gender'];
-        $phone = test1($_POST['phone']);
+        $phone = $_POST['phone'];
         $address = $_POST['address'];
         $zip_code = $_POST['zip_code'];
         $role = 'customer';
-        echo "<script>alert('" . $full_name . " " . $email . " " . $username . " " . $password . " " . $gender . " " . $phone . " " . $address . " " . $zip_code . " " . $role . "');</script>";
 
         $full_name = test1($full_name);
 
@@ -52,10 +51,7 @@ if (!isset($_SESSION['role'])) {
             $sql = "INSERT INTO `user`(`username`, `password`, `full_name`, `email`, `role`, `contact_no`, `address`, `gender`, `zip_code`) VALUES ('$username','$password','$full_name','$email','$role','$phone','$address','$gender','$zip_code')";
             if ($conn->query($sql)) {
                 echo "<script>alert('User Registration Successfull');</script>";
-                $_SESSION['user'] = $username;
-                $_SESSION['role'] = 'customer';
-
-                header("location:shop.php");
+                header("location:customer_list.php");
             } else
                 echo "<script>alert('" . $conn->error . "');</script>";
         }
@@ -129,8 +125,8 @@ if (!isset($_SESSION['role'])) {
                     <td><b>Phone No #</b></td>
                     <td class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                        <input name="phone" placeholder="8801700000000" value="<?php // if ($status === 0) echo $phone; ?>"  class="form-control"
-                               type="tel" pattern="[0-9]{13}" title="Must have 13 digit including country code 880" required>
+                        <input name="phone" placeholder="8801700000000" value="<?php if ($status === 0) echo $phone;  ?>"  class="form-control"
+                               type="tel" pattern="{13}" title="Must have 13 digit including country code 880" required>
                     </td>
                     <td class="message"><?php echo $mphone; ?></td>
                 </tr>

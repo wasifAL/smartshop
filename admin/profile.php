@@ -4,8 +4,14 @@ if (session_id() == '' || !isset($_SESSION)) {
     session_start();
 }
 //check if there is any active session and role is admin
-require 'db/dbcon.php';
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] !== "admin")
+        header("location:../shop.php");
+}
+require '../db/dbcon.php';
 require 'header.php';
+
+
 $full_name = $email = $username = $password = $gender = $phone = $address = $zip_code = $message = '';
 $status = 1;
 
@@ -65,7 +71,7 @@ if (isset($_POST['update_profile'])) {
         $j = mysqli_query($conn, $s);
         $user_pic = mysqli_fetch_array($j);
         if (!is_null($user_pic[0])) {
-            unlink($user_pic[0]);
+            unlink("../".$user_pic[0]);
         }
 
         // directory where image will be stored
@@ -78,7 +84,7 @@ if (isset($_POST['update_profile'])) {
             $message = $message . "<br>Sorry, only JPG, JPEG, PNG files are allowed.";
             $status = 0;
         } else {
-            if (move_uploaded_file($_FILES["pp"]["tmp_name"], $target_file)) {
+            if (move_uploaded_file($_FILES["pp"]["tmp_name"], "../".$target_file)) {
                 $query = $query . ",`profile_picture`='$target_file'";
             } else {
                 echo"<script>alert('image not inserted');</script>";
@@ -98,20 +104,14 @@ if (isset($_POST['update_profile'])) {
     }
 }
 
-
 if (isset($_GET['sl'])) {
-    $sql = "select * from user where sl = '" . $_GET['sl'] . "'";
+    $sql = "select * from user where sl='" . $_GET['sl'] . "'";
 } else {
-    $sql = "select * from user where username = '" . $_SESSION['user'] . "' and role = '" . $_SESSION['role'] . "'";
+    $sql = "select * from user where username='" . $_SESSION['user'] . "'  and role='" . $_SESSION['role'] . "'";
 }
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 ?>
-<style>
-    .table tr th,.table  tr td{
-        border-top: unset !important;
-    }
-</style>
 <script>
     $(document).ready(function () {
         $(".form-control").attr("disabled", "true");
@@ -137,14 +137,14 @@ $row = mysqli_fetch_assoc($result);
     <h1 class="text-center text-info">Welcome to <?php echo $_SESSION['user']; ?>'s Profile</h1><br>
     <div class="col-sm-offset-1 col-sm-7">
         <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-            <table class="table table-responsive">                
+            <table class="table table-responsive">
                 <tr class="form-group">
                     <td><b>Full Name</b></td>
                     <td><input class="form-control enable" type="text" name="full_name" value="<?php echo $row['full_name']; ?>"></td>
                 </tr>
                 <tr class="form-group">
                     <td><b>Email Address</b></td>
-                    <td><input class="form-control" type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="char@website.domain" value="<?php echo $row['email']; ?>" ></td>
+                    <td><input class="form-control" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="char@website.domain" name="email" value="<?php echo $row['email']; ?>"></td>
                 </tr>
                 <tr class="form-group">
                     <td><b>Username</b></td>
@@ -164,7 +164,7 @@ $row = mysqli_fetch_assoc($result);
                 </tr>
                 <tr class="form-group">
                     <td><b>Address</b></td>
-                    <td><input class="form-control enable" type="text" pattern=".{4,}" name="address" value="<?php echo $row['address']; ?>"></td>
+                    <td><input class="form-control enable" type="text"  pattern=".{4,}" name="address" value="<?php echo $row['address']; ?>"></td>
                 </tr>
                 <tr class="form-group">
                     <td><b>Zip Code</b></td>
@@ -184,10 +184,10 @@ $row = mysqli_fetch_assoc($result);
     </div>
     <div class="col-sm-3">
         <?php if ($row['profile_picture'] === NULL) { ?>
-            <img  src="pp/pp.jpg" class="img-responsive img-thumbnail"><br><br>
-<?php } else { ?>
-            <img src="<?php echo $row['profile_picture']; ?>" height="300" width="300" > <br><br>
-<?php } ?>
+            <img  src="../pp/pp.jpg" class="img-responsive img-thumbnail"><br><br>
+        <?php } else { ?>
+            <img src="../<?php echo $row['profile_picture']; ?>" height="300" width="300"> <br><br>
+        <?php } ?>
         <button id="edit" class="btn btn-block btn-lg btn-info">Edit Profile</button>
         <button id="cancel" class="btn btn-block btn-lg btn-danger">Cancel</button>
     </div>
